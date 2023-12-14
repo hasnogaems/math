@@ -242,9 +242,11 @@ long double s21_pow(double base, double exp) {
   else {
     res = s21_exp(exp * s21_log(base));
   }
+  if(s21_fmod(s21_fabs(base),1)==s21_fabs(base)){
+    res=s21_fmod(res,1)+1;
+  }
   return res;
 }
-
 // 13
 long double s21_sin(double x) {
   long double result;

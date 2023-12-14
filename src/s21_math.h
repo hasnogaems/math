@@ -1,6 +1,6 @@
 #ifndef S21_MATH_H
 #define S21_MATH_H
-
+#include <stdbool.h>
 #define s21_INFINITY (1.0 / 0.0)
 #define s21_NEGINFINITY (-1.0 / 0.0)
 #include <float.h>

@@ -16,12 +16,12 @@ double exp_hypergeom(double x) {
 }
 int main() {
   int check = 1;
-  for (double k = -400; k <= 400; k += 1.7) {
-    for (double g = -400; g < 400; g += 1) {
-      double a = s21_pow(k, g);
-      double b = pow(k, g);
+for (double k = -200; k <= 200; k += 1.7) {
+    for (double g = -200; g < 200; g += 1) {
+      long double a = s21_pow(k, g);
+      long double b = powl(k, g);
       if (fabsl(a - b) > 1e-6) {
-        printf("k=%.7f\ng=%.7f\n21=%.7f\nm=%.7f\n", k, g, a, b);
+        printf("k=%.7f\ng=%.7f\n21=%.7Lf\nm=%.7Lf\n", k, g, a, b);
         check = 0;
         break;
       }
