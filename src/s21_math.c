@@ -1,4 +1,5 @@
 #include "s21_math.h"
+
 #define NAN (0.0 / 0.0)
 const double s21_M_E = 2.71828182845904523536028747135266250;
 const double s21_M_PI = 3.14159265358979323846264338327950288;
@@ -112,20 +113,21 @@ long double s21_exp(double x) {
     result = 0;
   } else if (s21_isnan(x)) {
     result = NAN;
-  } else if (x == s21_INFINITY)
+  } else if (x > 709)
     result = s21_INFINITY;
   else if (x == 0) {
     result = 1;
-  } 
-  else if (x<-20){
-    result=0;
-    }
-    else {
+  } else if (x < -20) {
+    result = 0;
+  }
+
+ else {
     long double term = x;
-    long double precision = 1e-8;  // Точность до 20 знаков после запятой
-    long double term_contrib =0;
+    long double precision = 1e-20;  // Точность до 20 знаков после запятой
+    long double term_contrib = 0;
     long double f = 1;
-    for (int n = 2; s21_fabs(term_contrib) > precision || s21_fmod(n,2)==0 ; n++) {
+    for (int n = 2; s21_fabs(term_contrib) > precision || s21_fmod(n, 2) == 0;
+         n++) {
       term_contrib = term / f;
       result += term_contrib;
       term *= x;
@@ -231,13 +233,12 @@ long double s21_pow(double base, double exp) {
   } else if (base == 0.0 && exp < 0.0) {
     res = s21_INFINITY;
   }
-
   else if (base == 0.0 && exp > 0.0) {
     res = 0.0;
   } else if (base < 0 && s21_fmod(exp, 2) == 1.0) {
     res = -s21_exp(exp * s21_log(-base));
-  } else if (base < 0 && s21_fmod(exp, 2) == 0.0)
-    res = s21_exp(exp * s21_log(-base));
+  } else if (base < 0 && s21_fmod(exp, 2) == 0.0){
+       res = s21_exp(exp * s21_log(-base));}
   else {
     res = s21_exp(exp * s21_log(base));
   }
