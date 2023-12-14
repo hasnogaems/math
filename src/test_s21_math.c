@@ -12,15 +12,15 @@ START_TEST(pow_test_1) {
       long double b = powl(k, g);
       if ((!s21_isnan(a) && !isnan(b)) && !(a == INFINITY && b == INFINITY) &&
           !(a == -INFINITY && b == -INFINITY)) {
-            if(!(s21_isinf(a)||s21_isinf(b)))
-        ck_assert_double_eq_tol(a, b, 1e-6);
+        if (!(s21_isinf(a) || s21_isinf(b)))
+          ck_assert_double_eq_tol(a, b, 1e-6);
       }
       a = s21_pow(g, k);
       b = pow(g, k);
       if ((!s21_isnan(a) && !isnan(b)) && !(a == INFINITY && b == INFINITY) &&
           !(a == -INFINITY && b == -INFINITY)) {
-             if(!(s21_isinf(a)||s21_isinf(b)))
-        ck_assert_double_eq_tol(a, b, 1e-6);
+        if (!(s21_isinf(a) || s21_isinf(b)))
+          ck_assert_double_eq_tol(a, b, 1e-6);
       }
     }
   }
@@ -263,8 +263,7 @@ START_TEST(sqrt_test_1) {
   for (double k = -1000; k < 1000; k += 3) {
     double a = s21_sqrt(k);
     double b = sqrt(k);
-      if (!s21_isnan(a) && !s21_isnan(b)) 
-    ck_assert_double_eq_tol(a, b, 1e-6);
+    if (!s21_isnan(a) && !s21_isnan(b)) ck_assert_double_eq_tol(a, b, 1e-6);
   }
 }
 END_TEST

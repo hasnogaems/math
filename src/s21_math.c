@@ -121,7 +121,7 @@ long double s21_exp(double x) {
     result = 0;
   }
 
- else {
+  else {
     long double term = x;
     long double precision = 1e-20;  // Точность до 20 знаков после запятой
     long double term_contrib = 0;
@@ -232,19 +232,26 @@ long double s21_pow(double base, double exp) {
     res = (exp < 0) ? 0.0 : s21_INFINITY;
   } else if (base == 0.0 && exp < 0.0) {
     res = s21_INFINITY;
-  }
-  else if (base == 0.0 && exp > 0.0) {
+  } else if (base == 0.0 && exp > 0.0) {
     res = 0.0;
   } else if (base < 0 && s21_fmod(exp, 2) == 1.0) {
     res = -s21_exp(exp * s21_log(-base));
-  } else if (base < 0 && s21_fmod(exp, 2) == 0.0){
-       res = s21_exp(exp * s21_log(-base));}
-  else {
+    if (s21_fabs(base) / 1 == s21_fabs(base)) {
+      res = res / 1;
+    }
+  } else if (base < 0 && s21_fmod(exp, 2) == 0.0) {
+    res = s21_exp(exp * s21_log(-base));
+    if (s21_fabs(base) / 1 == s21_fabs(base)) {
+      printf("s");
+      res = res / 1;
+    }
+  } else {
     res = s21_exp(exp * s21_log(base));
+    if (s21_fabs(base) / 1 == s21_fabs(base)) {
+      res = res / 1;
+    }
   }
-  if(s21_fmod(s21_fabs(base),1)==s21_fabs(base)){
-    res=s21_fmod(res,1)+1;
-  }
+
   return res;
 }
 // 13
