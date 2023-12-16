@@ -1,14 +1,16 @@
 #ifndef S21_MATH_H
 #define S21_MATH_H
+
 #include <stdbool.h>
-#define s21_INFINITY (1.0 / 0.0)
-#define s21_NEGINFINITY (-1.0 / 0.0)
 #include <float.h>
 #include <stdio.h>
 
+#define s21_NaN 0.0 / 0.0
+#define s21_INFINITY 1.0 / 0.0
+#define s21_NEGINFINITY -1.0 / 0.0
+#define s21_M_PI 3.14159265358979323846264338327950288
+#define s21_M_E 2.71828182845904523536028747135266250
 // 1
-extern const double s21_M_E;
-extern const double s21_M_PI;
 
 int s21_abs(int x);
 
@@ -57,5 +59,4 @@ long double s21_tan(double x);
 
 int s21_isnan(long double x);
 int s21_isinf(long double x);
-long double s21_sqrtx(double base, double exp) ;
 #endif  // MATHLIB_H

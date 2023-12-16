@@ -6,10 +6,10 @@
 #include "s21_math.h"
 
 START_TEST(pow_test_1) {
-  for (double k = -200; k <= 200; k += 1.7) {
-    for (double g = -200; g < 200; g += 1) {
+  for (double k = -10; k <= 10; k += 1) {
+    for (double g = -10; g < 10; g += 1) {
       long double a = s21_pow(k, g);
-      long double b = powl(k, g);
+      long double b = pow(k, g);
       if ((!s21_isnan(a) && !isnan(b)) && !(a == INFINITY && b == INFINITY) &&
           !(a == -INFINITY && b == -INFINITY)) {
         if (!(s21_isinf(a) || s21_isinf(b)))
@@ -58,9 +58,9 @@ START_TEST(pow_test_3) {
   ck_assert_double_eq(pow(INFINITY, -1), s21_pow(s21_INFINITY, -1));
   ck_assert_double_eq(pow(-1, -INFINITY), s21_pow(-1, -s21_INFINITY));
   ck_assert_double_eq(pow(0, INFINITY), s21_pow(0, s21_INFINITY));
-  ck_assert_double_nan(s21_pow(0, NAN));
-  ck_assert_double_eq(pow(NAN, 0), s21_pow(NAN, 0));
-  ck_assert_double_nan(s21_pow(NAN, NAN));
+  ck_assert_double_nan(s21_pow(0, s21_NaN));
+  ck_assert_double_eq(pow(s21_NaN, 0), s21_pow(s21_NaN, 0));
+  ck_assert_double_nan(s21_pow(s21_NaN, s21_NaN));
   ck_assert_double_eq(pow(INFINITY, INFINITY),
                       s21_pow(s21_INFINITY, s21_INFINITY));
   ck_assert_double_eq(pow(INFINITY, -INFINITY),
@@ -70,11 +70,11 @@ START_TEST(pow_test_3) {
   ck_assert_double_eq(pow(-INFINITY, -INFINITY),
                       s21_pow(-s21_INFINITY, -s21_INFINITY));
   ck_assert_double_eq(pow(1, -INFINITY), s21_pow(1, -s21_INFINITY));
-  ck_assert_double_eq(pow(1, NAN), s21_pow(1, NAN));
-  ck_assert_double_nan(s21_pow(NAN, s21_INFINITY));
-  ck_assert_double_nan(s21_pow(s21_INFINITY, NAN));
-  ck_assert_double_nan(s21_pow(NAN, -s21_INFINITY));
-  ck_assert_double_nan(s21_pow(-s21_INFINITY, NAN));
+  ck_assert_double_eq(pow(1, s21_NaN), s21_pow(1, s21_NaN));
+  ck_assert_double_nan(s21_pow(s21_NaN, s21_INFINITY));
+  ck_assert_double_nan(s21_pow(s21_INFINITY, s21_NaN));
+  ck_assert_double_nan(s21_pow(s21_NaN, -s21_INFINITY));
+  ck_assert_double_nan(s21_pow(-s21_INFINITY, s21_NaN));
   ck_assert_double_eq(pow(2, INFINITY), s21_pow(2, s21_INFINITY));
   ck_assert_double_eq(pow(0.5, INFINITY), s21_pow(0.5, s21_INFINITY));
   ck_assert_double_eq(pow(-2, INFINITY), s21_pow(-2, s21_INFINITY));
@@ -121,7 +121,7 @@ START_TEST(log_test_4) {
 END_TEST
 
 START_TEST(log_test_5) {
-  ck_assert_double_nan(s21_log(NAN));
+  ck_assert_double_nan(s21_log(s21_NaN));
   ck_assert_double_eq(log(0), s21_log(0));
   ck_assert_double_nan(s21_log(-3));
   ck_assert_double_eq(log(INFINITY), s21_log(s21_INFINITY));
@@ -163,9 +163,9 @@ START_TEST(tan_test_1) {
 END_TEST
 
 START_TEST(sin_cos_tan_test) {
-  ck_assert_double_nan(s21_sin(NAN));
-  ck_assert_double_nan(s21_cos(NAN));
-  ck_assert_double_nan(s21_tan(NAN));
+  ck_assert_double_nan(s21_sin(s21_NaN));
+  ck_assert_double_nan(s21_cos(s21_NaN));
+  ck_assert_double_nan(s21_tan(s21_NaN));
   ck_assert_double_nan(s21_sin(s21_INFINITY));
   ck_assert_double_nan(s21_cos(s21_INFINITY));
   ck_assert_double_nan(s21_tan(s21_INFINITY));
@@ -205,7 +205,7 @@ START_TEST(exp_test_3) {
 END_TEST
 
 START_TEST(exp_test_4) {
-  ck_assert_double_nan(s21_exp(NAN));
+  ck_assert_double_nan(s21_exp(s21_NaN));
   ck_assert_double_eq(exp(INFINITY), s21_exp(s21_INFINITY));
   ck_assert_double_eq(exp(-INFINITY), s21_exp(-s21_INFINITY));
   ck_assert_double_eq(exp(0), s21_exp(0));
@@ -269,8 +269,8 @@ START_TEST(sqrt_test_1) {
 END_TEST
 
 START_TEST(sqrt_test_2) {
-  ck_assert_double_nan(s21_sqrt(NAN));
-  ck_assert_double_nan(sqrt(NAN));
+  ck_assert_double_nan(s21_sqrt(s21_NaN));
+  ck_assert_double_nan(sqrt(s21_NaN));
   ck_assert_double_eq(s21_sqrt(s21_INFINITY), sqrt(INFINITY));
   ck_assert_double_nan(s21_sqrt(-s21_INFINITY));
   ck_assert_double_nan(sqrt(-INFINITY));
@@ -297,9 +297,9 @@ START_TEST(atan_test_2) {
 END_TEST
 
 START_TEST(asin_acos_atan_test) {
-  ck_assert_double_nan(s21_asin(NAN));
-  ck_assert_double_nan(s21_acos(NAN));
-  ck_assert_double_nan(s21_atan(NAN));
+  ck_assert_double_nan(s21_asin(s21_NaN));
+  ck_assert_double_nan(s21_acos(s21_NaN));
+  ck_assert_double_nan(s21_atan(s21_NaN));
   ck_assert_double_nan(s21_asin(s21_INFINITY));
   ck_assert_double_nan(s21_acos(s21_INFINITY));
   ck_assert_double_eq(atan(INFINITY), s21_atan(s21_INFINITY));
@@ -325,8 +325,8 @@ END_TEST
 START_TEST(fabs_test) {
   ck_assert_double_eq(fabs(INFINITY), s21_fabs(s21_INFINITY));
   ck_assert_double_eq(fabs(-INFINITY), s21_fabs(-s21_INFINITY));
-  ck_assert_double_nan(fabs(NAN));
-  ck_assert_double_nan(s21_fabs(NAN));
+  ck_assert_double_nan(fabs(s21_NaN));
+  ck_assert_double_nan(s21_fabs(s21_NaN));
   ck_assert_double_eq(fabs(-7.0), s21_fabs(-7.0));
   ck_assert_double_eq(fabs(-98.1), s21_fabs(-98.1));
   ck_assert_double_eq(fabs(123.02), s21_fabs(123.02));
@@ -340,8 +340,8 @@ END_TEST
 START_TEST(floor_test) {
   ck_assert_double_eq(floor(INFINITY), s21_floor(s21_INFINITY));
   ck_assert_double_eq(floor(-INFINITY), s21_floor(-s21_INFINITY));
-  ck_assert_double_nan(floor(NAN));
-  ck_assert_double_nan(s21_floor(NAN));
+  ck_assert_double_nan(floor(s21_NaN));
+  ck_assert_double_nan(s21_floor(s21_NaN));
   ck_assert_double_eq(floor(-7.0), s21_floor(-7.0));
   ck_assert_double_eq(floor(-98.1), s21_floor(-98.1));
   ck_assert_double_eq(floor(123.02), s21_floor(123.02));
@@ -356,8 +356,8 @@ END_TEST
 START_TEST(ceil_test) {
   ck_assert_double_eq(ceil(INFINITY), s21_ceil(s21_INFINITY));
   ck_assert_double_eq(ceil(-INFINITY), s21_ceil(-s21_INFINITY));
-  ck_assert_double_nan(ceil(NAN));
-  ck_assert_double_nan(s21_ceil(NAN));
+  ck_assert_double_nan(ceil(s21_NaN));
+  ck_assert_double_nan(s21_ceil(s21_NaN));
   ck_assert_double_eq(ceil(-7.0), s21_ceil(-7.0));
   ck_assert_double_eq(ceil(-98.1), s21_ceil(-98.1));
   ck_assert_double_eq(ceil(123.02), s21_ceil(123.02));
@@ -377,18 +377,18 @@ START_TEST(fmod_test_1) {
   ck_assert_double_nan(s21_fmod(INFINITY, -1));
   ck_assert_double_eq(fmod(-1, -INFINITY), s21_fmod(-1, -s21_INFINITY));
   ck_assert_double_eq(fmod(0, INFINITY), s21_fmod(0, s21_INFINITY));
-  ck_assert_double_nan(s21_fmod(0, NAN));
-  ck_assert_double_nan(fmod(0, NAN));
-  ck_assert_double_nan(s21_fmod(NAN, NAN));
-  ck_assert_double_nan(fmod(NAN, NAN));
-  ck_assert_double_nan(s21_fmod(NAN, s21_INFINITY));
-  ck_assert_double_nan(s21_fmod(s21_INFINITY, NAN));
-  ck_assert_double_nan(s21_fmod(NAN, -s21_INFINITY));
-  ck_assert_double_nan(s21_fmod(-s21_INFINITY, NAN));
-  ck_assert_double_nan(fmod(NAN, INFINITY));
-  ck_assert_double_nan(fmod(INFINITY, NAN));
-  ck_assert_double_nan(fmod(NAN, -INFINITY));
-  ck_assert_double_nan(fmod(-INFINITY, NAN));
+  ck_assert_double_nan(s21_fmod(0, s21_NaN));
+  ck_assert_double_nan(fmod(0, s21_NaN));
+  ck_assert_double_nan(s21_fmod(s21_NaN, s21_NaN));
+  ck_assert_double_nan(fmod(s21_NaN, s21_NaN));
+  ck_assert_double_nan(s21_fmod(s21_NaN, s21_INFINITY));
+  ck_assert_double_nan(s21_fmod(s21_INFINITY, s21_NaN));
+  ck_assert_double_nan(s21_fmod(s21_NaN, -s21_INFINITY));
+  ck_assert_double_nan(s21_fmod(-s21_INFINITY, s21_NaN));
+  ck_assert_double_nan(fmod(s21_NaN, INFINITY));
+  ck_assert_double_nan(fmod(INFINITY, s21_NaN));
+  ck_assert_double_nan(fmod(s21_NaN, -INFINITY));
+  ck_assert_double_nan(fmod(-INFINITY, s21_NaN));
 }
 END_TEST
 

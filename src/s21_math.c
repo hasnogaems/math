@@ -1,11 +1,5 @@
 #include "s21_math.h"
 
-#define NAN (0.0 / 0.0)
-const double s21_M_E = 2.71828182845904523536028747135266250;
-const double s21_M_PI = 3.14159265358979323846264338327950288;
-long double s21_sqrtx(double base, double exp) {
-  return s21_exp(s21_log(base) / exp);
-}
 int s21_isnan(long double x) { return (x != x); }
 int s21_isinf(long double x) {
   return (!s21_isnan(x) && (x == s21_INFINITY || x == s21_NEGINFINITY)) ? 1 : 0;
@@ -22,7 +16,7 @@ int s21_abs(int x) { return (x < 0 ? -x : x); }
 
 // 2
 long double s21_acos(double x) {
-  long double result = NAN;
+  long double result = s21_NaN;
   if (!(x > 1 || s21_isnan(x))) result = s21_M_PI / 2 - s21_asin(x);
   return result;
 }
@@ -31,9 +25,9 @@ long double s21_acos(double x) {
 long double s21_asin(double x) {
   long double res = 0.0;
   if (s21_isnan(x) || s21_isinf(x))
-    res = NAN;
+    res = s21_NaN;
   else if (s21_fabs(x) > 1)
-    res = NAN;
+    res = s21_NaN;
   else if (s21_fabs(x) <= 1) {
     res = s21_atan(x / s21_sqrt(1 - x * x));
   }
@@ -42,7 +36,7 @@ long double s21_asin(double x) {
 
 // 4
 long double s21_atan(double x) {
-  long double result = NAN;
+  long double result = s21_NaN;
   if (!s21_isnan(x)) {
     int n = x < 0.0;
     if (n) x = -x;
@@ -82,9 +76,8 @@ long double s21_ceil(double x) {
 long double s21_cos(double x) {
   long double result;
   if (s21_isnan(x) || s21_isinf(x)) {
-    result = NAN;  // Для бесконечных значений результат не определен
+    result = s21_NaN;
   } else {
-    // Приведение угла к диапазону [-pi, pi]
     while (x > s21_M_PI) {
       x -= 2 * s21_M_PI;
     }
@@ -106,22 +99,35 @@ long double s21_cos(double x) {
 }
 
 // 7
+// long double s21_exp(double x) {
+//   long double result = 1, y = 1;
+//   int minus = x < 0 ? -1 : 1;
+//   x *= minus;
+//   for (int i = 1; s21_fabs(result) > s21_EPSEQ; i++) {
+//     result *= x / i;
+//     y += result;
+//     if (y > s21_MAX_DOUBLE) {
+//       y = s21_INFINITY;
+//       break;
+//     }
+//   }
+//   y = minus == -1 ? y > s21_MAX_DOUBLE ? 0 : 1.0 / y : y;
+//   return y > s21_MAX_DOUBLE ? s21_INFINITY : y;
+// }
 
 long double s21_exp(double x) {
   long double result = 1.0;
   if (x == s21_NEGINFINITY) {
     result = 0;
   } else if (s21_isnan(x)) {
-    result = NAN;
+    result = s21_NaN;
   } else if (x > 709)
     result = s21_INFINITY;
   else if (x == 0) {
     result = 1;
   } else if (x < -20) {
     result = 0;
-  }
-
-  else {
+  } else {
     long double term = x;
     long double precision = 1e-20;  // Точность до 20 знаков после запятой
     long double term_contrib = 0;
@@ -157,7 +163,7 @@ long double s21_floor(double x) {
 long double s21_fmod(double x, double y) {
   long double res;
   if (s21_isnan(y) || s21_isnan(x) || y == 0.0 || x == s21_INFINITY) {
-    res = NAN;
+    res = s21_NaN;
   } else if (x == 0.0) {
     res = x;
   } else {
@@ -180,7 +186,7 @@ long double s21_fmod(double x, double y) {
 long double s21_log(double x) {
   long double result = 0.0;
   if (x < 0 || s21_isnan(x))
-    result = NAN;
+    result = s21_NaN;
   else if (x == 0.0)
     result = s21_NEGINFINITY;
   else if (x == s21_INFINITY)
@@ -200,13 +206,12 @@ long double s21_log(double x) {
     }
 
     result *= 2;
-    if (result > DBL_MAX) result = NAN;
+    if (result > DBL_MAX) result = s21_NaN;
   }
   return result;
 }
 
 // 12
-
 long double s21_pow(double base, double exp) {
   long double res = 1.0;
   if (exp == 0.0) {
@@ -218,7 +223,7 @@ long double s21_pow(double base, double exp) {
   } else if ((base >= 0.0 && base < 1) && exp == s21_NEGINFINITY) {
     res = s21_INFINITY;
   } else if (s21_isnan(base) || s21_isnan(exp)) {
-    res = NAN;
+    res = s21_NaN;
   } else if (base == -1.0 && s21_isinf(exp)) {
     res = 1.0;
   } else if (s21_isinf(base) && !s21_isinf(exp)) {
@@ -234,33 +239,32 @@ long double s21_pow(double base, double exp) {
     res = s21_INFINITY;
   } else if (base == 0.0 && exp > 0.0) {
     res = 0.0;
+  } else if ((int)exp == exp) {
+    int p = (int)exp;
+    while (p != 0) {
+      if ((p & 1) == 1) {
+        res *= base;
+      }
+      p /= 2;
+      base *= base;
+    }
+    return exp < 0 ? 1 / res : res;
   } else if (base < 0 && s21_fmod(exp, 2) == 1.0) {
     res = -s21_exp(exp * s21_log(-base));
-    if (s21_fabs(base) / 1 == s21_fabs(base)) {
-      res = res / 1;
-    }
-  } else if (base < 0 && s21_fmod(exp, 2) == 0.0) {
+  } else if (base < 0 && s21_fmod(exp, 2) == 0.0)
     res = s21_exp(exp * s21_log(-base));
-    if (s21_fabs(base) / 1 == s21_fabs(base)) {
-      printf("s");
-      res = res / 1;
-    }
-  } else {
+  else {
     res = s21_exp(exp * s21_log(base));
-    if (s21_fabs(base) / 1 == s21_fabs(base)) {
-      res = res / 1;
-    }
   }
-
   return res;
 }
+
 // 13
 long double s21_sin(double x) {
   long double result;
   if (s21_isnan(x) || s21_isinf(x)) {
-    result = NAN;  // Для бесконечных значений результат не определен
+    result = s21_NaN;
   } else {
-    // Приведение угла к диапазону [-pi, pi]
     while (x > s21_M_PI) {
       x -= 2 * s21_M_PI;
     }
@@ -282,8 +286,45 @@ long double s21_sin(double x) {
 }
 
 // 14
-long double s21_sqrt(double x) { return s21_sqrtx(x, 2); }
 
+long double s21_sqrt(double x) {
+  long double value_sqrt = 0;
+  if (x != x) {
+    value_sqrt = s21_NaN;
+  } else if (x == s21_INFINITY) {
+    value_sqrt = s21_INFINITY;
+  } else {
+    long double end = x;
+    if (x < 0 || x == s21_NaN) {
+      value_sqrt = s21_NaN;
+    } else {
+      long double start = 0;
+      while (start <= end) {
+        long double mid = 0;
+        mid = (start + end) / 2;
+        if (mid * mid == x) {
+          value_sqrt = mid;
+          break;
+        }
+        if (mid * mid < x) {
+          value_sqrt = start;
+          start = mid + 1;
+        } else {
+          end = mid - 1;
+        }
+      }
+      long double increment = 0.1;
+      for (int i = 0; i <= 6; i++) {
+        while (value_sqrt * value_sqrt <= x) {
+          value_sqrt += increment;
+        }
+        value_sqrt = value_sqrt - increment;
+        increment = increment / 10;
+      }
+    }
+  }
+  return value_sqrt;
+}
 // 15
 long double s21_tan(double x) {
   long double result;
@@ -295,10 +336,10 @@ long double s21_tan(double x) {
     } else if (sin_x < 0.0) {
       result = s21_NEGINFINITY;
     } else {
-      result = NAN;
+      result = s21_NaN;
     }
   } else if (s21_isnan(sin_x) || s21_isnan(cos_x)) {
-    result = NAN;
+    result = s21_NaN;
   } else if (x == s21_M_PI / 2) {
     result = 16331239353195369.755859375;
   } else if (x == -s21_M_PI / 2) {

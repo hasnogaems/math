@@ -29,13 +29,6 @@ clang:
 	cp ../materials/linters/.clang-format .clang-format
 	clang-format -n *.c *.h
 	
-test1: m.o s21_math.o
-	$(CC) $(CFLAGS)  $^ $(LIBS) -o $@ -lcheck -lm -lpthread
-	./test1
-
-m.o: m.c s21_math.h
-	$(CC) $(CFLAGS) -I. -c $< -o $@
-
 clean:
 	rm -f *.a
 	rm -f *.o
