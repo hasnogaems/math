@@ -1,8 +1,8 @@
 #ifndef S21_MATH_H
 #define S21_MATH_H
 
-#include <stdbool.h>
 #include <float.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 #define s21_NaN 0.0 / 0.0
@@ -55,7 +55,6 @@ long double s21_sqrt(double x);
 
 // 15
 long double s21_tan(double x);
-
 
 int s21_isnan(long double x);
 int s21_isinf(long double x);

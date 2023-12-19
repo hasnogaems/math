@@ -18,7 +18,7 @@ test: test_s21_math.o s21_math.o
 test_s21_math.o: test_s21_math.c s21_math.h
 	$(CC) $(CFLAGS) $(CCOVTEST) -I. -c $< -o $@
 
-gcov_report: test s21_math.a
+gcov_report: s21_math.a
 	$(CC) $(CFLAGS) -pedantic -lcheck $(CCOVTEST) test_s21_math.c s21_math.a -o $@
 	./gcov_report
 	lcov -t gcov_report -o test.info -c -d .
